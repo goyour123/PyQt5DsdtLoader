@@ -1,0 +1,39 @@
+    OperationRegion (SERP, SystemIO, 0x3F8, 0x8)
+    Field (SERP, ByteAcc, NoLock, Preserve)
+    {
+      THRR, 8,
+          , 8,
+          , 8,
+          , 8,
+          , 8,
+      LSRR, 8,
+      MSRR, 8
+    }
+
+    Method (SDBG, 1, Serialized) {
+
+      // Store length of input string to Local0
+      Store (SizeOf(Arg0), Local0)
+      If (LEqual (Local0, 0)) {
+        Return (0)
+      }
+
+      // Store input string to buffer STRB
+      Name (STRB, Buffer(Local0){})
+      Store (Arg0, STRB)
+
+      Store (LSRR, Local1)
+      While (LEqual (And (Local1, 0x20), 0)) {
+        Store (LSRR, Local1)
+      }
+
+      Store (MSRR, Local2)
+      While (LNotEqual (Local0, 0)) {
+        While (Not (LNotEqual (And (Local2, 0x30), 0x20))) {
+          Store (MSRR, Local2)
+        }
+        Store (DerefOf (Index (STRB, Subtract (SizeOf (Arg0), Local0))), THRR)
+        Decrement (Local0)
+      }
+      Return (0)
+    }

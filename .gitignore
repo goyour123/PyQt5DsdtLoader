@@ -1,0 +1,16 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# Editor specific
+.vscode/*
+
+# Output files
+*.asl
+*.dsl
+*.aml
+/*.bin
+
+# User-specific files
+/*.build
+asl.exe
+iasl.exe
