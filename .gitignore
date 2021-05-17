@@ -8,7 +8,7 @@ __pycache__/
 *.asl
 *.dsl
 *.aml
-/*.bin
+*.bin
 
 # User-specific files
 /*.build

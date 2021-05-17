@@ -2,14 +2,11 @@ import sys, os, subprocess
 import winreg
 import logging
 import json, re
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPlainTextEdit, QAbstractItemView, QMessageBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QAbstractItemView, QMessageBox, QVBoxLayout
 from PyQt5.QtCore import QStringListModel, QModelIndex
+from PyQt5.Qsci import QsciScintilla
 from PyQt5DsdtLoaderGUI import Ui_MainWindow
 from wal import ACPI_REG_KEY_PATH, REGEDIT_AML_POSTFIX, OUTPUT_ASL_POSTFIX, AML_POSTFIX, GetEnumKeyList
-
-class PlainTextEdit (QPlainTextEdit):
-    def __init__(self):
-        super(PlainTextEdit, self).__init__()
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -17,9 +14,10 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.ui.plainTextEdit.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
-        Document = self.ui.plainTextEdit.document()
-        Document.contentsChanged.connect(self.acpiTblCntChanged)
+        self.qscintilla = QsciScintilla()
+        self.qscintilla.setWrapMode (QsciScintilla.SC_WRAP_NONE)
+        self.ui.verticalLayout.addWidget(self.qscintilla)
+        self.qscintilla.textChanged.connect(self.acpiTblCntChanged)
 
         self.ui.pushButton.clicked.connect(self.compilePushButton)
         self.ui.pushButton.setEnabled(False)
@@ -89,14 +87,14 @@ class MainWindow(QMainWindow):
             print(status.stderr)
             with open (self.tblName + OUTPUT_ASL_POSTFIX, 'r') as tbl:
                 tblCnt = tbl.read()
-        self.ui.plainTextEdit.setPlainText(tblCnt)
+        self.qscintilla.setText(tblCnt)
 
     def acpiTblCntChanged(self):
         self.ui.pushButton.setEnabled(True)
 
     def compilePushButton(self):
         with open (self.tblName + OUTPUT_ASL_POSTFIX, 'w') as tbl:
-            tbl.write(self.ui.plainTextEdit.toPlainText())
+            tbl.write(self.qscintilla.text())
         status = subprocess.run ([iAslExePath, '-ve', self.tblName + OUTPUT_ASL_POSTFIX], encoding='utf-8', capture_output=True)
         if not status.returncode:
             self.ui.pushButton.setEnabled(False)
