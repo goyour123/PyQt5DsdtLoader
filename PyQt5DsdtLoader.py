@@ -2,8 +2,9 @@ import sys, os, subprocess
 import winreg
 import logging
 import json, re
-from PyQt5.QtWidgets import QApplication, QMainWindow, QAbstractItemView, QMessageBox, QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QAbstractItemView, QMessageBox
 from PyQt5.QtCore import QStringListModel, QModelIndex
+from PyQt5.QtGui import QFont
 from PyQt5.Qsci import QsciScintilla
 from PyQt5DsdtLoaderGUI import Ui_MainWindow
 from wal import ACPI_REG_KEY_PATH, REGEDIT_AML_POSTFIX, OUTPUT_ASL_POSTFIX, AML_POSTFIX, GetEnumKeyList
@@ -14,10 +15,14 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        self.qfont = QFont()
+        self.qfont.setPointSize(11)
+
         self.qscintilla = QsciScintilla()
         self.qscintilla.setWrapMode (QsciScintilla.SC_WRAP_NONE)
         self.ui.verticalLayout.addWidget(self.qscintilla)
         self.qscintilla.textChanged.connect(self.acpiTblCntChanged)
+        self.qscintilla.setFont(self.qfont)
 
         self.ui.pushButton.clicked.connect(self.compilePushButton)
         self.ui.pushButton.setEnabled(False)
