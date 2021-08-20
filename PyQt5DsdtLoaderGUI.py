@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'PyQt5DsdtLoaderGUI.ui'
+# Form implementation generated from reading ui file '.\PyQt5DsdtLoaderGUI.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -18,20 +18,26 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.listView = QtWidgets.QListView(self.centralwidget)
-        self.listView.setGeometry(QtCore.QRect(10, 70, 71, 351))
+        self.listView.setGeometry(QtCore.QRect(10, 80, 70, 440))
         self.listView.setObjectName("listView")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(10, 450, 71, 23))
+        self.pushButton.setGeometry(QtCore.QRect(10, 10, 60, 60))
         self.pushButton.setObjectName("pushButton")
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_2.setGeometry(QtCore.QRect(10, 490, 71, 23))
+        self.pushButton_2.setGeometry(QtCore.QRect(80, 10, 60, 60))
         self.pushButton_2.setObjectName("pushButton_2")
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(100, 70, 691, 441))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(100, 80, 691, 441))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
+        self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_3.setGeometry(QtCore.QRect(150, 10, 60, 60))
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_4.setGeometry(QtCore.QRect(220, 10, 60, 60))
+        self.pushButton_4.setObjectName("pushButton_4")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 817, 21))
@@ -49,3 +55,5 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "walGUI"))
         self.pushButton.setText(_translate("MainWindow", "Compile"))
         self.pushButton_2.setText(_translate("MainWindow", "Load"))
+        self.pushButton_3.setText(_translate("MainWindow", "Debug On"))
+        self.pushButton_4.setText(_translate("MainWindow", "Debug Off"))

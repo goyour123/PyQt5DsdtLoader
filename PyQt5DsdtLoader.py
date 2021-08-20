@@ -28,6 +28,8 @@ class MainWindow(QMainWindow):
         self.ui.pushButton.setEnabled(False)
         self.ui.pushButton_2.clicked.connect(self.loadPushButton)
         self.ui.pushButton_2.setEnabled(False)
+        self.ui.pushButton_3.clicked.connect(self.debugOnPushButton)
+        self.ui.pushButton_4.clicked.connect(self.debugOffPushButton)
 
         self.msgBox = QMessageBox()
 
@@ -134,6 +136,22 @@ class MainWindow(QMainWindow):
                 self.popErrMsgBox(status.stderr)
         else:
             pass
+
+    def debugOnPushButton(self):
+        # Get current user
+        status = subprocess.run(['whoami'], encoding='utf-8', capture_output=True)
+        user = status.stdout.split('\n')[0]
+
+        status = subprocess.run(['runas', '/noprofile', '/user:' + user, 'bcdedit /set testsigning on'], shell=True)
+        print ('Return Code', status.returncode)
+
+    def debugOffPushButton(self):
+        # Get current user
+        status = subprocess.run(['whoami'], encoding='utf-8', capture_output=True)
+        user = status.stdout.split('\n')[0]
+
+        status = subprocess.run(['runas', '/noprofile', '/user:' + user, 'bcdedit /set testsigning off'], shell=True)
+        print ('Return Code:', status.returncode)
 
 if __name__ == "__main__":
 
