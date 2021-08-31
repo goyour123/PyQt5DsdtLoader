@@ -138,19 +138,11 @@ class MainWindow(QMainWindow):
             pass
 
     def debugOnPushButton(self):
-        # Get current user
-        status = subprocess.run(['whoami'], encoding='utf-8', capture_output=True)
-        user = status.stdout.split('\n')[0]
-
-        status = subprocess.run(['runas', '/noprofile', '/user:' + user, 'bcdedit /set testsigning on'], shell=True)
+        status = subprocess.run(['bcdedit', '/set', 'testsigning', 'on'], encoding='utf-8', shell=True)
         print ('Return Code', status.returncode)
 
     def debugOffPushButton(self):
-        # Get current user
-        status = subprocess.run(['whoami'], encoding='utf-8', capture_output=True)
-        user = status.stdout.split('\n')[0]
-
-        status = subprocess.run(['runas', '/noprofile', '/user:' + user, 'bcdedit /set testsigning off'], shell=True)
+        status = subprocess.run(['bcdedit', '/set', 'testsigning', 'off'], encoding='utf-8', shell=True)
         print ('Return Code:', status.returncode)
 
 if __name__ == "__main__":
