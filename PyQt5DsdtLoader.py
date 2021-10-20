@@ -1,4 +1,4 @@
-import sys, os, subprocess
+import sys, os, ctypes, subprocess
 import winreg
 import logging
 import json, re
@@ -139,45 +139,54 @@ class MainWindow(QMainWindow):
 
     def debugOnPushButton(self):
         status = subprocess.run(['bcdedit', '/set', 'testsigning', 'on'], encoding='utf-8', shell=True)
-        print ('Return Code', status.returncode)
+        print ('Return Code:', status.returncode)
 
     def debugOffPushButton(self):
         status = subprocess.run(['bcdedit', '/set', 'testsigning', 'off'], encoding='utf-8', shell=True)
         print ('Return Code:', status.returncode)
 
+def isAdmin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+
 if __name__ == "__main__":
 
-    cfgName = 'wal'
-    cfgExt = 'json'
+    if isAdmin():
+        cfgName = 'wal'
+        cfgExt = 'json'
 
-    # Check config file exists
-    try:
-        logging.info ('Load ' + cfgName + '.' + cfgExt)
-        with open (cfgName + '.' + cfgExt, 'r') as j:
-            cfg = json.load(j)
-    except:
-        logging.error (cfgName + '.' + cfgExt + " not found!")
-        sys.exit()
+        # Check config file exists
+        try:
+            logging.info ('Load ' + cfgName + '.' + cfgExt)
+            with open (cfgName + '.' + cfgExt, 'r') as j:
+                cfg = json.load(j)
+        except:
+            logging.error (cfgName + '.' + cfgExt + " not found!")
+            sys.exit()
 
-    # Check whether asl.exe exists
-    if os.path.exists(cfg['ASL_EXE_PATH']):
-        aslExePath = os.path.realpath(cfg['ASL_EXE_PATH'])
-        logging.info ("Found asl.exe - " + aslExePath)
+        # Check whether asl.exe exists
+        if os.path.exists(cfg['ASL_EXE_PATH']):
+            aslExePath = os.path.realpath(cfg['ASL_EXE_PATH'])
+            logging.info ("Found asl.exe - " + aslExePath)
+        else:
+            logging.error ("asl.exe not found! - " + cfg['ASL_EXE_PATH'])
+            sys.exit()
+
+        # Check whether iasl.exe exists
+        if os.path.exists(cfg['iASL_EXE_PATH']):
+            iAslExePath = os.path.realpath(cfg['iASL_EXE_PATH'])
+            logging.info ("Found iasl.exe - " + iAslExePath)
+        else:
+            logging.error ("iasl.exe not found! - " + cfg['iASL_EXE_PATH'])
+            sys.exit()
+
+        app = QApplication(sys.argv)
+
+        window = MainWindow()
+        window.show()
+        sys.exit(app.exec())
     else:
-        logging.error ("asl.exe not found! - " + cfg['ASL_EXE_PATH'])
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
         sys.exit()
-
-    # Check whether iasl.exe exists
-    if os.path.exists(cfg['iASL_EXE_PATH']):
-        iAslExePath = os.path.realpath(cfg['iASL_EXE_PATH'])
-        logging.info ("Found iasl.exe - " + iAslExePath)
-    else:
-        logging.error ("iasl.exe not found! - " + cfg['iASL_EXE_PATH'])
-        sys.exit()
-
-    app = QApplication(sys.argv)
-
-    window = MainWindow()
-    window.show()
-
-    sys.exit(app.exec())
