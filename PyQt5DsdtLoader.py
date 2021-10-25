@@ -129,7 +129,7 @@ class MainWindow(QMainWindow):
     def loadPushButton(self):
         rtn = self.popMsgBox()
         if rtn == QMessageBox.StandardButton.Apply:
-            status = subprocess.run ([aslExePath, '/loadtable', self.tblName + AML_POSTFIX], encoding='utf-8', capture_output=True)
+            status = subprocess.run ([aslExePath, '/loadtable', self.tblName + AML_POSTFIX], encoding='utf-8', shell=True)
             if status.returncode:
                 self.ui.pushButton_2.setEnabled(False)
             else:
@@ -188,5 +188,8 @@ if __name__ == "__main__":
         window.show()
         sys.exit(app.exec())
     else:
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
+        if os.path.splitext(sys.argv[0])[1] == '.py':
+            ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
+        else:
+            ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.argv[0], None, None, 1)
         sys.exit()
