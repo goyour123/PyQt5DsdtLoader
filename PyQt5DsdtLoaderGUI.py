@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '.\PyQt5DsdtLoaderGUI.ui'
+# Form implementation generated from reading ui file 'PyQt5DsdtLoaderGUI.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -14,33 +14,40 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(817, 600)
+        MainWindow.resize(813, 586)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.listView = QtWidgets.QListView(self.centralwidget)
-        self.listView.setGeometry(QtCore.QRect(10, 80, 70, 440))
+        self.listView.setGeometry(QtCore.QRect(10, 49, 61, 471))
         self.listView.setObjectName("listView")
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(10, 10, 60, 60))
+        self.pushButton.setGeometry(QtCore.QRect(10, 10, 61, 31))
+        self.pushButton.setToolTip("")
         self.pushButton.setObjectName("pushButton")
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_2.setGeometry(QtCore.QRect(80, 10, 60, 60))
+        self.pushButton_2.setGeometry(QtCore.QRect(80, 10, 61, 31))
         self.pushButton_2.setObjectName("pushButton_2")
         self.verticalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(100, 80, 691, 441))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(90, 50, 701, 471))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_3.setGeometry(QtCore.QRect(150, 10, 60, 60))
+        self.pushButton_3.setGeometry(QtCore.QRect(150, 10, 61, 31))
         self.pushButton_3.setObjectName("pushButton_3")
         self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_4.setGeometry(QtCore.QRect(220, 10, 60, 60))
+        self.pushButton_4.setGeometry(QtCore.QRect(220, 10, 61, 31))
         self.pushButton_4.setObjectName("pushButton_4")
+        self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_5.setGeometry(QtCore.QRect(740, 10, 51, 31))
+        self.pushButton_5.setObjectName("pushButton_5")
+        self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
+        self.lineEdit.setGeometry(QtCore.QRect(490, 10, 241, 31))
+        self.lineEdit.setObjectName("lineEdit")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 817, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 813, 18))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -52,8 +59,13 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "walGUI"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "PyQt5DsdtLoader"))
+        self.pushButton.setWhatsThis(_translate("MainWindow", "Compile"))
         self.pushButton.setText(_translate("MainWindow", "Compile"))
+        self.pushButton_2.setWhatsThis(_translate("MainWindow", "Load"))
         self.pushButton_2.setText(_translate("MainWindow", "Load"))
+        self.pushButton_3.setWhatsThis(_translate("MainWindow", "Debug On"))
         self.pushButton_3.setText(_translate("MainWindow", "Debug On"))
+        self.pushButton_4.setWhatsThis(_translate("MainWindow", "Debug Off"))
         self.pushButton_4.setText(_translate("MainWindow", "Debug Off"))
+        self.pushButton_5.setText(_translate("MainWindow", "Search"))

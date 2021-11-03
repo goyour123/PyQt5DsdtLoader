@@ -1,0 +1,12 @@
+//
+// UART Serial Port - COM1
+//
+Device (UAR1) {
+  Name (_HID, EISAID ("PNP0501"))
+  Name (_DDN, "COM1")
+  Name (_UID, 0x01)
+  Name(_CRS,ResourceTemplate() {
+    IO (Decode16, 0x3F8, 0x3F8, 0x01, 0x08)
+    IRQ (Edge, ActiveHigh, Exclusive, ) {4}
+  })
+}

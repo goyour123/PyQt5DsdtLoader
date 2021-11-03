@@ -28,3 +28,4 @@ python -m nuitka --mingw64 --standalone --plugin-enable=qt-plugins %SCRIPT_NAME%
     copy %IASL_EXE% %SCRIPT_NAME%.dist
   )
 )
+@PAUSE

@@ -30,6 +30,7 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_2.setEnabled(False)
         self.ui.pushButton_3.clicked.connect(self.debugOnPushButton)
         self.ui.pushButton_4.clicked.connect(self.debugOffPushButton)
+        self.ui.pushButton_5.clicked.connect(self.searchPushButton)
 
         self.msgBox = QMessageBox()
 
@@ -136,6 +137,9 @@ class MainWindow(QMainWindow):
                 self.popErrMsgBox(status.stderr)
         else:
             pass
+    
+    def searchPushButton(self):
+        s = self.ui.lineEdit.text()
 
     def debugOnPushButton(self):
         status = subprocess.run(['bcdedit', '/set', 'testsigning', 'on'], encoding='utf-8', shell=True)
