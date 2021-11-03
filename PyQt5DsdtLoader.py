@@ -140,6 +140,7 @@ class MainWindow(QMainWindow):
     
     def searchPushButton(self):
         s = self.ui.lineEdit.text()
+        self.qscintilla.findFirst(s, False, False, False, True, True)
 
     def debugOnPushButton(self):
         status = subprocess.run(['bcdedit', '/set', 'testsigning', 'on'], encoding='utf-8', shell=True)
