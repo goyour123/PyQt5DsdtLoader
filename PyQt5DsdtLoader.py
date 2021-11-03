@@ -31,6 +31,10 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_3.clicked.connect(self.debugOnPushButton)
         self.ui.pushButton_4.clicked.connect(self.debugOffPushButton)
         self.ui.pushButton_5.clicked.connect(self.searchPushButton)
+        self.ui.checkBox.stateChanged.connect(self.woCheckBox)
+        self.ui.checkBox_2.stateChanged.connect(self.csCheckBox)
+
+        self.wo, self.cs = False, False
 
         self.msgBox = QMessageBox()
 
@@ -100,6 +104,18 @@ class MainWindow(QMainWindow):
     def acpiTblCntChanged(self):
         self.ui.pushButton.setEnabled(True)
 
+    def woCheckBox (self):
+        if self.ui.checkBox.isChecked():
+            self.wo = True
+        else:
+            self.wo = False
+
+    def csCheckBox (self):
+        if self.ui.checkBox_2.isChecked():
+            self.cs = True
+        else:
+            self.cs = False
+
     def compilePushButton(self):
         with open (self.tblName + OUTPUT_ASL_POSTFIX, 'w') as tbl:
             tbl.write(self.qscintilla.text())
@@ -140,7 +156,7 @@ class MainWindow(QMainWindow):
     
     def searchPushButton(self):
         s = self.ui.lineEdit.text()
-        self.qscintilla.findFirst(s, False, False, False, True, True)
+        self.qscintilla.findFirst(s, False, self.cs, self.wo, True, True)
 
     def debugOnPushButton(self):
         status = subprocess.run(['bcdedit', '/set', 'testsigning', 'on'], encoding='utf-8', shell=True)
