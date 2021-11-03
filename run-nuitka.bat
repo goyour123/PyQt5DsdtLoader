@@ -11,12 +11,11 @@ python -m nuitka --mingw64 --standalone --plugin-enable=qt-plugins %SCRIPT_NAME%
 )
 
 @REM Copy debug file to dist
-@set DEBUG_SCRIPT=SerialDebug.asi
-@if exist %DEBUG_SCRIPT% (
-  @if exist %SCRIPT_NAME%.dist (
-    copy %DEBUG_SCRIPT% %SCRIPT_NAME%.dist
-  )
+@set DEBUG_SCRIPT=*.asi
+@if exist %SCRIPT_NAME%.dist (
+  copy %DEBUG_SCRIPT% %SCRIPT_NAME%.dist
 )
+
 
 @REM Copy third party tool to dist
 @set ASL_EXE=asl.exe
