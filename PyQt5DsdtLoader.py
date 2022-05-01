@@ -2,8 +2,8 @@ import sys, os, ctypes, subprocess
 import winreg
 import logging
 import json, re
-from PyQt5.QtWidgets import QApplication, QMainWindow, QAbstractItemView, QMessageBox
-from PyQt5.QtCore import QStringListModel, QModelIndex
+from PyQt5.QtWidgets import QApplication, QMainWindow, QAbstractItemView, QMessageBox, QShortcut
+from PyQt5.QtCore import QStringListModel, QModelIndex, Qt
 from PyQt5.QtGui import QFont
 from PyQt5.Qsci import QsciScintilla
 from PyQt5DsdtLoaderGUI import Ui_MainWindow
@@ -30,11 +30,20 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_2.setEnabled(False)
         self.ui.pushButton_3.clicked.connect(self.debugOnPushButton)
         self.ui.pushButton_4.clicked.connect(self.debugOffPushButton)
-        self.ui.pushButton_5.clicked.connect(self.searchPushButton)
+        self.ui.pushButton_5.clicked.connect(lambda: self.searchPushButton(True))
         self.ui.checkBox.stateChanged.connect(self.woCheckBox)
         self.ui.checkBox_2.stateChanged.connect(self.csCheckBox)
 
         self.wo, self.cs = False, False
+
+        # Add shortcuts
+        QShortcut(Qt.ControlModifier | Qt.Key_F, self.qscintilla).activated.connect(self.shortCutCtrlF)
+        QShortcut(Qt.Key_Return, self.ui.lineEdit).activated.connect(lambda: self.searchPushButton(True))
+        QShortcut(Qt.Key_Enter, self.ui.lineEdit).activated.connect(lambda: self.searchPushButton(True))
+        QShortcut(Qt.Key_F3, self.ui.lineEdit).activated.connect(lambda: self.searchPushButton(True))
+        QShortcut(Qt.ShiftModifier | Qt.Key_Return, self.ui.lineEdit).activated.connect(lambda: self.searchPushButton(False))
+        QShortcut(Qt.ShiftModifier | Qt.Key_Enter, self.ui.lineEdit).activated.connect(lambda: self.searchPushButton(False))
+        QShortcut(Qt.ShiftModifier | Qt.Key_F3, self.ui.lineEdit).activated.connect(lambda: self.searchPushButton(False))
 
         self.msgBox = QMessageBox()
 
@@ -154,9 +163,11 @@ class MainWindow(QMainWindow):
         else:
             pass
     
-    def searchPushButton(self):
+    def searchPushButton(self, fw):
         s = self.ui.lineEdit.text()
-        self.qscintilla.findFirst(s, False, self.cs, self.wo, True, True)
+        if not fw:
+            self.qscintilla.setCursorPosition(self.qscintilla.getCursorPosition()[0], self.qscintilla.getCursorPosition()[1] - 1 )
+        self.qscintilla.findFirst(s, False, self.cs, self.wo, True, forward=fw)
 
     def debugOnPushButton(self):
         status = subprocess.run(['bcdedit', '/set', 'testsigning', 'on'], encoding='utf-8', shell=True)
@@ -165,6 +176,11 @@ class MainWindow(QMainWindow):
     def debugOffPushButton(self):
         status = subprocess.run(['bcdedit', '/set', 'testsigning', 'off'], encoding='utf-8', shell=True)
         print ('Return Code:', status.returncode)
+
+    def shortCutCtrlF(self):
+        self.ui.lineEdit.setText(self.qscintilla.selectedText())
+        self.ui.lineEdit.setFocus()
+        self.ui.lineEdit.selectAll()
 
 def isAdmin():
     try:
