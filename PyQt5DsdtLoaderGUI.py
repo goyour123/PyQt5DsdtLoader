@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'PyQt5DsdtLoaderGUI.ui'
+# Form implementation generated from reading ui file '.\PyQt5DsdtLoaderGUI.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -39,21 +39,19 @@ class Ui_MainWindow(object):
         self.pushButton_4.setGeometry(QtCore.QRect(220, 10, 61, 31))
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_5 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_5.setGeometry(QtCore.QRect(700, 10, 51, 31))
+        self.pushButton_5.setGeometry(QtCore.QRect(740, 10, 51, 31))
         self.pushButton_5.setObjectName("pushButton_5")
         self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit.setGeometry(QtCore.QRect(460, 10, 231, 31))
+        self.lineEdit.setGeometry(QtCore.QRect(430, 10, 231, 31))
         self.lineEdit.setObjectName("lineEdit")
-        self.checkBox = QtWidgets.QCheckBox(self.centralwidget)
-        self.checkBox.setGeometry(QtCore.QRect(760, 10, 40, 13))
-        self.checkBox.setObjectName("checkBox")
-        self.checkBox_2 = QtWidgets.QCheckBox(self.centralwidget)
-        self.checkBox_2.setGeometry(QtCore.QRect(760, 25, 40, 13))
-        self.checkBox_2.setIconSize(QtCore.QSize(12, 12))
-        self.checkBox_2.setObjectName("checkBox_2")
+        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label.setGeometry(QtCore.QRect(670, 10, 61, 31))
+        self.label.setText("")
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
+        self.label.setObjectName("label")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 813, 18))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 813, 21))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -80,7 +78,3 @@ class Ui_MainWindow(object):
         self.pushButton_4.setText(_translate("MainWindow", "Debug Off"))
         self.pushButton_5.setToolTip(_translate("MainWindow", "Search"))
         self.pushButton_5.setText(_translate("MainWindow", "Search"))
-        self.checkBox.setToolTip(_translate("MainWindow", "Whole Word Only"))
-        self.checkBox.setText(_translate("MainWindow", "WO"))
-        self.checkBox_2.setToolTip(_translate("MainWindow", "Case Sensitive"))
-        self.checkBox_2.setText(_translate("MainWindow", "CS"))

@@ -31,8 +31,6 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_3.clicked.connect(self.debugOnPushButton)
         self.ui.pushButton_4.clicked.connect(self.debugOffPushButton)
         self.ui.pushButton_5.clicked.connect(lambda: self.searchPushButton(True))
-        self.ui.checkBox.stateChanged.connect(self.woCheckBox)
-        self.ui.checkBox_2.stateChanged.connect(self.csCheckBox)
 
         self.wo, self.cs = False, False
 
@@ -113,18 +111,6 @@ class MainWindow(QMainWindow):
     def acpiTblCntChanged(self):
         self.ui.pushButton.setEnabled(True)
 
-    def woCheckBox (self):
-        if self.ui.checkBox.isChecked():
-            self.wo = True
-        else:
-            self.wo = False
-
-    def csCheckBox (self):
-        if self.ui.checkBox_2.isChecked():
-            self.cs = True
-        else:
-            self.cs = False
-
     def compilePushButton(self):
         with open (self.tblName + OUTPUT_ASL_POSTFIX, 'w') as tbl:
             tbl.write(self.qscintilla.text())
@@ -167,7 +153,10 @@ class MainWindow(QMainWindow):
         s = self.ui.lineEdit.text()
         if not fw:
             self.qscintilla.setCursorPosition(self.qscintilla.getCursorPosition()[0], self.qscintilla.getCursorPosition()[1] - 1 )
-        self.qscintilla.findFirst(s, False, self.cs, self.wo, True, forward=fw)
+        if not self.qscintilla.findFirst(s, False, False, False, True, forward=fw):
+            self.ui.label.setText("Not Found") 
+        else:
+            self.ui.label.setText(None)
 
     def debugOnPushButton(self):
         status = subprocess.run(['bcdedit', '/set', 'testsigning', 'on'], encoding='utf-8', shell=True)
