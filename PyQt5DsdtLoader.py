@@ -33,6 +33,7 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_5.clicked.connect(lambda: self.searchPushButton(True))
 
         self.wo, self.cs = False, False
+        self.searchText, self.selections = self.ui.lineEdit.text(), None
 
         # Add shortcuts
         QShortcut(Qt.ControlModifier | Qt.Key_F, self.qscintilla).activated.connect(self.shortCutCtrlF)
@@ -110,6 +111,7 @@ class MainWindow(QMainWindow):
 
     def acpiTblCntChanged(self):
         self.ui.pushButton.setEnabled(True)
+        self.selections = None
 
     def compilePushButton(self):
         with open (self.tblName + OUTPUT_ASL_POSTFIX, 'w') as tbl:
@@ -148,15 +150,36 @@ class MainWindow(QMainWindow):
                 self.popErrMsgBox(status.stderr)
         else:
             pass
-    
-    def searchPushButton(self, fw):
-        s = self.ui.lineEdit.text()
-        if not fw:
-            self.qscintilla.setCursorPosition(self.qscintilla.getCursorPosition()[0], self.qscintilla.getCursorPosition()[1] - 1 )
-        if not self.qscintilla.findFirst(s, False, False, False, True, forward=fw):
-            self.ui.label.setText("Not Found") 
+
+    def searchLoop(self, s):
+        resSelList = list()
+        orgCurPosition = self.qscintilla.getCursorPosition()
+        self.qscintilla.setCursorPosition (0, 0)
+        if not self.qscintilla.findFirst(s, False, False, False, False, forward=True):
+            return None
         else:
-            self.ui.label.setText(None)
+            resSelList.append(self.qscintilla.getSelection())
+            while (self.qscintilla.findNext()):
+                resSelList.append(self.qscintilla.getSelection())
+        self.qscintilla.setCursorPosition(orgCurPosition[0], orgCurPosition[1])
+        return resSelList
+
+    def searchPushButton(self, fw):
+        if self.searchText != self.ui.lineEdit.text() or not self.selections:
+            self.searchText = self.ui.lineEdit.text()
+            self.selections = self.searchLoop(self.searchText)
+        orgCurPosition = self.qscintilla.getCursorPosition()
+
+        if not fw:
+            self.qscintilla.setCursorPosition(orgCurPosition[0], orgCurPosition[1] - 1)
+
+        if not self.qscintilla.findFirst(self.searchText, False, False, False, False, forward=fw):
+            self.ui.label.setText("Not Found")
+            if not fw:
+                self.qscintilla.setCursorPosition(orgCurPosition[0], orgCurPosition[1])
+        else:
+            t = str(self.selections.index(self.qscintilla.getSelection()) + 1) + " / " + str(len(self.selections))
+            self.ui.label.setText(t)
 
     def debugOnPushButton(self):
         status = subprocess.run(['bcdedit', '/set', 'testsigning', 'on'], encoding='utf-8', shell=True)
