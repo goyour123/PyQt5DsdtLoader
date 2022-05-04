@@ -23,13 +23,14 @@ class MainWindow(QMainWindow):
         self.ui.verticalLayout.addWidget(self.qscintilla)
         self.qscintilla.textChanged.connect(self.acpiTblCntChanged)
         self.qscintilla.setFont(self.qfontSci)
+        self.qscintilla.setEolMode(QsciScintilla.SC_EOL_CRLF)
 
         # Qsci margin
         qsciMargin = QsciScintilla.MarginType()
         qsciMarginFont = QFont()
         qsciMarginFont.setPointSize(8)
         self.qscintilla.setMarginsFont(qsciMarginFont)
-        self.qscintilla.setMarginWidth(1, 50)
+        self.qscintilla.setMarginWidth(1, "xxxxxx")
         self.qscintilla.setMarginType(1, qsciMargin)
         self.qscintilla.setMarginLineNumbers(1, True)
 
