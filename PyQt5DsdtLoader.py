@@ -15,14 +15,23 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.qfont = QFont()
-        self.qfont.setPointSize(11)
+        self.qfontSci = QFont()
+        self.qfontSci.setPointSize(11)
 
         self.qscintilla = QsciScintilla()
         self.qscintilla.setWrapMode (QsciScintilla.SC_WRAP_NONE)
         self.ui.verticalLayout.addWidget(self.qscintilla)
         self.qscintilla.textChanged.connect(self.acpiTblCntChanged)
-        self.qscintilla.setFont(self.qfont)
+        self.qscintilla.setFont(self.qfontSci)
+
+        # Qsci margin
+        qsciMargin = QsciScintilla.MarginType()
+        qsciMarginFont = QFont()
+        qsciMarginFont.setPointSize(8)
+        self.qscintilla.setMarginsFont(qsciMarginFont)
+        self.qscintilla.setMarginWidth(1, 50)
+        self.qscintilla.setMarginType(1, qsciMargin)
+        self.qscintilla.setMarginLineNumbers(1, True)
 
         self.ui.pushButton.clicked.connect(self.compilePushButton)
         self.ui.pushButton.setEnabled(False)
@@ -176,7 +185,8 @@ class MainWindow(QMainWindow):
         if not self.qscintilla.findFirst(self.searchText, False, False, False, False, forward=fw):
             self.ui.label.setText("Not Found")
             if not fw:
-                self.qscintilla.setCursorPosition(orgCurPosition[0], orgCurPosition[1])
+                self.qscintilla.setSelection(self.selections[0][0], self.selections[0][1], \
+                    self.selections[0][2], self.selections[0][3])
         else:
             t = str(self.selections.index(self.qscintilla.getSelection()) + 1) + " / " + str(len(self.selections))
             self.ui.label.setText(t)
