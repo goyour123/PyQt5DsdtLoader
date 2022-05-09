@@ -165,9 +165,7 @@ class MainWindow(QMainWindow):
         resSelList = list()
         orgCurPosition = self.qscintilla.getCursorPosition()
         self.qscintilla.setCursorPosition (0, 0)
-        if not self.qscintilla.findFirst(s, False, False, False, False, forward=True):
-            return None
-        else:
+        if self.qscintilla.findFirst(s, False, False, False, False, forward=True):
             resSelList.append(self.qscintilla.getSelection())
             while (self.qscintilla.findNext()):
                 resSelList.append(self.qscintilla.getSelection())
