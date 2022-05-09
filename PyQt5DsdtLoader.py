@@ -169,7 +169,7 @@ class MainWindow(QMainWindow):
             resSelList.append(self.qscintilla.getSelection())
             while (self.qscintilla.findNext()):
                 resSelList.append(self.qscintilla.getSelection())
-        self.qscintilla.setCursorPosition(orgCurPosition[0], orgCurPosition[1])
+        self.qscintilla.setCursorPosition(*orgCurPosition)
         return resSelList
 
     def searchPushButton(self, fw):
@@ -184,8 +184,9 @@ class MainWindow(QMainWindow):
         if not self.qscintilla.findFirst(self.searchText, False, False, False, False, forward=fw):
             self.ui.label.setText("Not Found")
             if not fw:
-                self.qscintilla.setSelection(self.selections[0][0], self.selections[0][1], \
-                    self.selections[0][2], self.selections[0][3])
+                self.qscintilla.setSelection(*self.selections[0])
+            else:
+                self.qscintilla.setSelection(*self.selections[-1])
         else:
             t = str(self.selections.index(self.qscintilla.getSelection()) + 1) + " / " + str(len(self.selections))
             self.ui.label.setText(t)
