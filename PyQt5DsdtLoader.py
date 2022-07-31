@@ -44,6 +44,7 @@ class MainWindow(QMainWindow):
 
         self.wo, self.cs = False, False
         self.searchText, self.selections = self.ui.lineEdit.text(), None
+        self.modified = False
 
         # Add shortcuts
         QShortcut(Qt.ControlModifier | Qt.Key_F, self.qscintilla).activated.connect(self.shortCutCtrlF)
@@ -81,8 +82,18 @@ class MainWindow(QMainWindow):
         self.ui.listView.clicked.connect(self.clickedListView)
 
     def clickedListView(self, qModelIndex):
+        # Select the same table, just to return
         if self.acpiModelIndex == qModelIndex:
             return
+
+        if self.modified:
+            rtn = self.popSaveBox()
+            if rtn == QMessageBox.StandardButton.Cancel:
+                self.ui.listView.setCurrentIndex(self.acpiModelIndex)
+                return
+            elif rtn == QMessageBox.StandardButton.Yes:
+                with open (self.tblName + '.mod' + OUTPUT_ASL_POSTFIX, 'w') as tbl:
+                    tbl.write(self.qscintilla.text())
 
         # Disable Compile pushButton
         self.ui.pushButton.setEnabled(False)
@@ -119,9 +130,13 @@ class MainWindow(QMainWindow):
                 tblCnt = tbl.read()
         self.qscintilla.setText(tblCnt)
 
+        # Change the table, set self.modified back to False
+        self.modified = False
+
     def acpiTblCntChanged(self):
         self.ui.pushButton.setEnabled(True)
         self.selections = None
+        self.modified = True
 
     def compilePushButton(self):
         with open (self.tblName + OUTPUT_ASL_POSTFIX, 'w') as tbl:
@@ -144,10 +159,18 @@ class MainWindow(QMainWindow):
 
     def popMsgBox(self):
         self.msgBox.setWindowTitle('LOAD')
-        self.msgBox.setText(self.tblName + ' is going load into registry !')
-        self.msgBox.setInformativeText('Do you want to apply it ?')
+        self.msgBox.setText(self.tblName + ' is going load into registry!')
+        self.msgBox.setInformativeText('Do you want to apply it?')
         self.msgBox.setStandardButtons(QMessageBox.StandardButton.Apply | QMessageBox.StandardButton.Cancel)
         self.msgBox.setDefaultButton(QMessageBox.StandardButton.Apply)
+        return self.msgBox.exec()
+
+    def popSaveBox(self):
+        self.msgBox.setWindowTitle('File Modified')
+        self.msgBox.setText(self.tblName + ' is modified! Do you want to save it?')
+        self.msgBox.setInformativeText('Yes to save the ' + self.tblName)
+        self.msgBox.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel)
+        self.msgBox.setDefaultButton(QMessageBox.StandardButton.Yes)
         return self.msgBox.exec()
 
     def loadPushButton(self):
